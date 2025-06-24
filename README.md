@@ -4,7 +4,9 @@ CardBoulevard is a programming language intended to make creating card games lik
 
 By taking in a user-written file, CardBoulevard interprets the code and generates a playable game that responds to user input as determined by the original code. such as user choices and custom conditional logic. CardBoulevard’s current version can handle a variety of game logic, from simple one-turn games to more complicated games with multiple players, turns, and custom win conditions. It’s structure is designed to be easily readable and accessible, even to users with limited programming experience.
 
-[![Image Description]](https://drive.google.com/file/d/1r8-0UT8INSwC6gwS_JtdrnzIHgcVkqHz/view?usp=sharing "Project Video")
+
+## [Final Project Video](https://drive.google.com/file/d/1r8-0UT8INSwC6gwS_JtdrnzIHgcVkqHz/view?usp=sharing "Project Video")
+Our final advertisement and demo video, which shows our language in use. Linked above.
 
 ## Design Principles 
 CardBoulevard’s design is guided by the goal of creating card games both simple and powerful. The language is made for those who have limited experience programming and who want to experiment with game rules, card dynamics, and win conditions. The language is rooted in simplicity through these key features:
