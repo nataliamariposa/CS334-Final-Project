@@ -1,0 +1,13 @@
+player 1 {"dealer", [(diamond, 1),(diamond, 2),(diamond, 4),(diamond, 5),(diamond, 6),(diamond, 7),(diamond, 8),(diamond, 9),(diamond, 10),(diamond, 11),(heart, 1),(heart, 2),(heart, 4),(heart, 5),(heart, 6),(heart, 7),(heart, 8),(heart, 9),(heart, 10),(heart, 11)]}
+player 2 {"player1", []}
+player 3 {"player2", []}
+player 4 {"dump", []}
+player 5 {"limit", [(diamond, 21)]}
+
+shuffle "dealer"
+
+while sum "player1" < sum "limit" (takecard "dealer" "player1")
+while sum "player2" < sum "limit" (takecard "dealer" "player2")
+
+if (sum "player1" > sum "player2") (winner "player1")
+if (sum "player1" < sum "player2") (winner "player2")

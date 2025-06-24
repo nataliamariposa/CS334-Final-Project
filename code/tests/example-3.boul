@@ -1,0 +1,43 @@
+player 1 {"dealer", [(diamond, 1),(diamond, 2),(diamond, 4),(diamond, 5),(diamond, 6),(diamond, 7),(diamond, 8),(diamond, 9),(diamond, 10),(diamond, 3),(heart, 1),(heart, 2),(heart, 4),(heart, 5),(heart, 6),(heart, 7),(heart, 8),(heart, 9),(heart, 10),(heart, 11)]}
+player 2 {"player1", []}
+player 6 {"computer", []}
+player 9 {"computerstrat", [(diamond, 17)]}
+player 5 {"limit", [(diamond, 21)]}
+player 10 {"Nobody", [(diamond, 21)]}
+player 7 {"limitup", [(diamond, 22)]}
+
+answer2 := false
+answer3 := false
+
+prompt "Aim to get a sum of cards under 21! :D Understand? Yes[1] Also Yes[0]"
+
+shuffle "dealer"
+takecard "dealer" "player1"
+takecard "dealer" "player1"
+
+sum "player1"
+answer1 := prompt "Take card? Yes [1] No[0]"
+
+if (answer1) (takecard "dealer" "player1")
+sum "player1"
+
+if (answer1) (answer2 := prompt "Take card? Yes [1] No[0]")
+if (answer2) (takecard "dealer" "player1")
+
+sum "player1"
+
+if (answer2)(answer3 := prompt "Take card? Yes [1] No[0]")
+if (answer3)(takecard "dealer" "player1")
+
+takecard "dealer" "computer"
+takecard "dealer" "computer"
+
+while sum "computer" < sum "computerstrat" (takecard "dealer" "computer")
+
+
+if (sum "computer" > sum "player1")(if(sum "computer" < sum "limitup")(winner "computer"))
+if (sum "player1" > sum "limit")(if(sum "computer" < sum "limitup")(winner "computer"))
+if (sum "player1" > sum "computer")(if(sum "player1" < sum "limitup")(winner "player1"))
+if (sum "computer" > sum "limit")(if(sum "player1" < sum "limitup")(winner "player1"))
+if (sum "computer" > sum "limit")(if(sum "player1" > sum "limit")(winner "Nobody"))
+
