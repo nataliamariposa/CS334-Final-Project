@@ -1,0 +1,14 @@
+player 1 {"dealer", [(diamond, 1),(diamond, 2)]}
+player 2 {"player1", [(diamond, 1),(diamond, 2)]}
+player 3 {"player2", [(spade, 1),(spade, 2),(spade, 3),(spade, 4),(spade, 5)]}
+sum "player1"
+firstcard "player1"
+
+fourthcard := showcard 4 "player1"
+"hi" = "hi"
+if (prompt "Take a Card? Yes[1] or No[0]") (takecard "player1" "player2")
+topcard1 := firstcard "player1"
+topcard2 := firstcard "player2"
+hascards "player1"
+topcard1
+
