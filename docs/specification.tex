@@ -1,0 +1,275 @@
+\documentclass[10pt]{article}
+
+% Lines beginning with the percent sign are comments
+% This file has been commented to help you understand more about LaTeX
+
+% DO NOT EDIT THE LINES BETWEEN THE TWO LONG HORIZONTAL LINES
+
+%---------------------------------------------------------------------------------------------------------
+
+% Packages add extra functionality.
+\usepackage{times,graphicx,epstopdf,fancyhdr,amsfonts,amsthm,amsmath,algorithm,algorithmic,xspace,hyperref}
+\usepackage[left=1in,top=1in,right=1in,bottom=1in]{geometry}
+\usepackage{sect sty}	%For centering section headings
+\usepackage{enumerate}	%Allows more labeling options for enumerate environments 
+\usepackage{epsfig}
+\usepackage[space]{grffile}
+\usepackage{booktabs}
+\usepackage{forest}
+\usepackage{enumitem}   
+\usepackage{fancyvrb}
+\usepackage{todonotes}
+
+% This will set LaTeX to look for figures in the same directory as the .tex file
+\graphicspath{.} % The dot means current directory.
+
+\pagestyle{fancy}
+
+\lhead{Final Project}
+\rhead{\today}
+\lfoot{CSCI 334: Principles of Programming Languages}
+\cfoot{\thepage}
+\rfoot{Spring 2025}
+
+% Some commands for changing header and footer format
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headwidth}{\textwidth}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% These let you use common environments
+\newtheorem{claim}{Claim}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{observation}{Observation}
+\newtheorem{question}{Question}
+
+\setlength{\parindent}{0cm}
+
+%---------------------------------------------------------------------------------------------------------
+
+% DON'T CHANGE ANYTHING ABOVE HERE
+
+% Edit below as instructed.
+% IF YOU EDITED CORRECTLY, all the big orange blocks should be gone.
+
+\title{CardBoulevard: Language Specification} % Replace SnappyLanguageName with your project's name
+
+\author{David Alfaro and Natalia Avila-Hernandez} % Replace these with real partner names.
+\date{Spring 2025}
+
+\begin{document}
+  
+\maketitle
+
+\subsection*{1 \hspace{1cm} Introduction}
+
+CardBoulevard is a programming language intended to make creating card games like poker, blackjack, and games with custom rules and logic, easier for the user and programmer.
+This current version of CardBoulevard can generate a playable game for users following a variety of constraints. 
+This language takes away the complexities of card and player object management, allowing developers to prototype, test, and run card-based games efficiently.
+The goal of CardBoulevard is to provide a declarative, human-readable way to manage and define cards and decks, rules, game state changes, and win conditions.
+\\
+\\By taking in a user-written file, CardBoulevard interprets the code and generates a playable game that responds to user input as determined by the original code. such as user choices and custom conditional logic.
+CardBoulevard's current version can handle a variety of game logic, from simple one-turn games to more complicated games with multiple players, turns, and custom win conditions. 
+It's structure is designed to be easily readable and accessible, even to users with limited programming experience.
+
+\subsection*{2 \hspace{1cm} Design Principles}
+
+CardBoulevard's design is guided by the goal of creating card games both simple and powerful. The language is made for those who have limited experience programming and who want to experiment with game rules, card dynamics, and win conditions. The language is rooted in simplicity through these key features:
+\begin{itemize}
+    \item \textbf{Simplicity and Readability}
+    \\The syntax of CardBoulevard is short and sweet. The commands resemble natural language when creating games and helps users understand the logic of the games which they are creating. This simplicity helps users quickly identify and read their own program, allowing for good self-expression and easier modifications of game logic. Since creating custom objects for cards and decks is tedious, especially for those with no programming language, instead we allow users to use a sort of template and create their card in whichever way they see fit. CardBoulevard allows for custom suits-- or types-- of cards, allowing for infinite possibilities. 
+    \item \textbf{Interactivity and Customization}
+    \\This language isn't just for incredibly static programs. The goal of this program is to allow for game-interaction through user-input and game logic. Users can simulate turns, players, and receive feedback based on their game's logic and what they have customized their game to be. CardBoulevard also allows for customization of cards, letting the possibilities of game-making to be endless. 
+\end{itemize}
+In general, CardBoulevard is designed with user simplicity and readability in mind, while also functioning as a powerful tool to create custom card games without the tedious work of learning a difficult and expansive language. It's designed to be adaptable and to be used by all, and thinking of basic concepts to let users think of mostly logic and concepts of their desired card game.
+
+\subsection*{3 \hspace{1cm} Example Programs}
+To run these example programs, type \texttt{dotnet run filename}, where filename is the name of the file while being in the correct repository. 
+For these examples, they are held in the example folder, in the test folder, in the code repository, named \texttt{example-1.boul}, replacing 1 with 2 or 3 for each respective program. So, running \texttt{dotnet run ../tests/examples/example-1.boul} while being in the code repository will start the examples!
+\\
+\\\textbf{Example 1: Draw One Battle}
+\\ This game consists of two cards in a deck, a 1 of diamonds and a 2 of diamonds, and the game is that two players draw one card each and whoever gets the 2 of diamonds wins the game.\\
+\\
+\textbf{Input in example-1.boul :}\\
+\texttt{player 1 \{"dealer", [(diamond, 1),(diamond, 2)]\}}\\
+\texttt{player 2 \{"player1", []\}}\\
+\texttt{player 3 \{"player2", []\}}\\
+\\
+\texttt{shuffle "dealer"}\\
+\texttt{answer := prompt "Player 1, do you want the top or bottom card? Top [1], bottom [0]"}\\
+\texttt{nother := false}\\
+\\
+\texttt{if (answer) (takecard "dealer" "player1") }\\
+\texttt{if (answer) (takecard "dealer" "player2")}\\
+\texttt{opposite := answer = nother}\\
+\texttt{if (opposite) (takecard "dealer" "player2") }\\
+\texttt{if (opposite) (takecard "dealer" "player1")}\\
+\\
+\texttt{score1 := sum "player1"}\\
+\texttt{score2 := sum "player2"}\\
+\\
+\texttt{if (score1 > score2) (winner "player1")}\\
+\texttt{if (score1 < score2) (winner "player2")}\\
+\\
+\\\textbf{Example 2: 21-Over Battle}
+\\ This game is a luck-based blackjack-inspired game that involves a player drawing cards until the sum of their hand is over 21. The player wins if the hand is over 21.
+\\
+\\\textbf{Input in example-2.boul :}\\
+\texttt{player 1 \{"dealer", [(diamond, 1),(diamond, 2),(diamond, 4),(diamond, 5),(diamond, 6),(diamond, 7),(diamond, 8),(diamond, 9),(diamond, 10),(diamond, 11),(heart, 1),(heart, 2),(heart, 4),(heart, 5),(heart, 6),(heart, 7),(heart, 8),(heart, 9),(heart, 10),(heart, 11)]\}} \\
+\texttt{player 2 \{"player1", []\}}\\
+\texttt{player 3 \{"player2", []\}}\\
+\texttt{player 4 \{"dump", []\}}\\
+\texttt{player 5 \{"limit", [(diamond, 21)]\}}\\
+\\
+\texttt{shuffle "dealer"}\\
+\\
+\texttt{while sum "player1" < sum "limit" (takecard "dealer" "player1")}\\
+\texttt{while sum "player2" < sum "limit" (takecard "dealer" "player2")}\\
+\\
+\texttt{if (sum "player1" > sum "player2") (winner "player1")}\\
+\texttt{if (sum "player1" < sum "player2") (winner "player2")}\\
+\\
+\\\textbf{Example 3: Black Jack}
+\\ This game consists of a deck of cards consisting of two suits, with each suit having 10 cards. There is a dealer /(computer/) and a player. The goal of the game is to get as close to 21 as possible without going over. 
+\\
+\\\textbf{Input in example-3.boul :}\\
+\texttt{player 1 \{"dealer", [(diamond, 1),(diamond, 2),(diamond, 4),(diamond, 5),(diamond, 6),(diamond, 7),(diamond, 8),(diamond, 9),(diamond, 10),(diamond, 3),(heart, 1),(heart, 2),(heart, 4),(heart, 5),(heart, 6),(heart, 7),(heart, 8),(heart, 9),(heart, 10),(heart, 11)]\}}\\
+\texttt{player 2 \{"player1", []\}}\\
+\texttt{player 6 \{"computer", []\}}\\
+\texttt{player 9 \{"computerstrat", [(diamond, 17)]\}}\\
+\texttt{player 5 \{"limit", [(diamond, 21)]\}}\\
+\texttt{player 10 \{"Nobody", [(diamond, 21)]\}}\\
+\texttt{player 7 \{"limitup", [(diamond, 22)]\}}\\
+\\
+\texttt{answer2 := false}\\
+\texttt{answer3 := false}\\
+\\
+\texttt{prompt "Aim to get a sum of cards under 21! :D Understand? Yes[1] Also Yes[0]"}\\
+\\
+\texttt{shuffle "dealer"}\\
+\texttt{takecard "dealer" "player1"}\\
+\texttt{takecard "dealer" "player1"}\\
+\\
+\texttt{sum "player1"}\\
+\texttt{answer1 := prompt "Take card? Yes [1] No[0]"}\\
+\texttt{if (answer1) (takecard "dealer" "player1")}\\
+\texttt{sum "player1"}\\
+\texttt{if (answer1) (answer2 := prompt "Take card? Yes [1] No[0]")}\\
+\texttt{if (answer2) (takecard "dealer" "player1")}\\
+\texttt{sum "player1"}\\
+\texttt{if (answer2)(answer3 := prompt "Take card? Yes [1] No[0]")}\\
+\texttt{if (answer3)(takecard "dealer" "player1")}\\
+\texttt{takecard "dealer" "computer"}\\
+\texttt{takecard "dealer" "computer"}\\
+\\
+\texttt{while sum "computer" < sum "computerstrat" (takecard "dealer" "computer")}\\
+\texttt{if (sum "computer" > sum "player1")(if(sum "computer" < sum "limitup")(winner "computer"))}\\
+\texttt{if (sum "player1" > sum "limit")(if(sum "computer" < sum "limitup")(winner "computer"))}\\
+\texttt{if (sum "player1" > sum "computer")(if(sum "player1" < sum "limitup")(winner "player1"))}\\
+\texttt{if (sum "computer" > sum "limit")(if(sum "player1" < sum "limitup")(winner "player1"))}\\
+\texttt{if (sum "computer" > sum "limit")(if(sum "player1" > sum "limit")(winner "Nobody"))}\\
+
+\subsection*{4 \hspace{1cm} Language Concepts}
+
+A user of CardBoulevard should be familiar with basic card and deck components. It would help to be familiar with general card game mechanics and logic, so that it would be easier to produce their own decks and cards and create the logic to their own games.
+While actually using our program, they would need to know the basic functions used during card games, including shuffling, sum, conditionals, etc. using the primitives such as Card, Deck, Player, and basic types like int and num. 
+Any user who can understand what type of game they want to create can easily use our language.
+The only thing a user would have to be aware of is the syntax of our language, as shown below, and understand the logic of whatever type of game they are trying to create.
+
+
+\subsection*{5 \hspace{1cm} Formal Syntax}
+
+ \texttt{<expr>} ::= \texttt{<num> | <str> | <bool> | <carddef> | <deckdef> | <playerdef> | <seq> | \\
+ \phantom{} \hspace{1cm} <sum> | <var> | <equal> | <greater> | <lesser> | <shuffle> | <assign> | <first> \\
+ \phantom{} \hspace{1cm} | <show> | <take> | <has> | <winner> | <while> | <if> | <prompt> | <parens>} \\
+ \texttt{<num>} ::= \texttt{n in Z} \\
+ \texttt{<str>} ::= \texttt{string} \\
+ \texttt{<name>} ::= \texttt{<str>} \\
+ \texttt{<bool>} ::= \texttt{"true" | "false"} \\
+ \texttt{<carddef>} ::= \texttt{(<num>, <suit>)} \\
+ \texttt{<deckdef>} ::= \texttt{\{<name>, [<carddef>]\}} \\
+ \texttt{<playerdef>} ::= \texttt{(<num>, <deckdef>)} \\
+ \texttt{<suit>} ::= \texttt{Heart \\ 
+ \phantom{} \hspace{1cm} | Diamond \\ 
+ \phantom{} \hspace{1cm} | Spade \\ 
+ \phantom{} \hspace{1cm} | Club} \\
+ \texttt{<sum>} ::= \texttt{(<num> + <num>)} \\
+ \texttt{<equal>} ::= \texttt{(<expr> = <expr>)} \\
+ \texttt{<greater>} ::= \texttt{(<expr> > <expr>)} \\
+ \texttt{<lesser>} ::= \texttt{(<expr> < <expr>)} \\
+ \texttt{<shuffle>} ::= \texttt{shuffle <deckdef>} \\
+ \texttt{<first>} ::= \texttt{firstcard <deckdef>} \\
+ \texttt{<show>} ::= \texttt{showcard <deckdef>} \\
+ \texttt{<take>} ::= \texttt{takecard <deckdef>} \\
+ \texttt{<has>} ::= \texttt{hascards <deckdef>} \\
+ \texttt{<winner>} ::= \texttt{winner <playerdef>} \\
+ \texttt{<while>} ::= \texttt{while <expr> <expr>} \\
+ \texttt{<if>} ::= \texttt{if <expr> <expr>} \\
+ \texttt{<parens>} ::= \texttt{(<expr>)} \\
+
+\subsection*{6 \hspace{1cm} Semantics}
+\setlength{\tabcolsep}{8pt}
+\begin{center}
+\begin{tabular}{p{4.5cm}|p{3cm}|p{2cm}|p{5cm}}
+    \textbf{Syntax} & \textbf{Abstract Syntax} & \textbf{Prec./Assoc.} & \textbf{Meaning}\\
+    \hline
+    \texttt{<n>} & \texttt{Num} of \texttt{int} & n/a & A numeric literal. Represents an integer.\\
+    \hline
+    \texttt{true, false} & \texttt{Bool} of \texttt{bool} & n/a & A boolean literal. Used in boolean conditionals\\
+    \hline
+    \texttt{Card(Suit)(Number)} & \texttt{CardDef} of \texttt{Card} & n/a & A card with a given suit and number\\
+    \hline
+    \texttt{Deck(Name)(Cards)} & \texttt{DeckDef} of \texttt{Deck} & n/a & A deck with a given name and a list of cards\\
+    \hline
+    \texttt{Player(Id,(Deck))} & \texttt{PlayerDef} of \texttt{Player} & n/a & A player with a given id and an initial deck of cards\\
+    \hline
+    \texttt{Sum <Player>} & \texttt{Sum} of \texttt{String} & 1/left & Computes the sum of card values in the specified player's hand\\
+    \hline
+    \texttt{<expr>} == \texttt{<expr>} & \texttt{Equal} of \texttt{Expr * Expr} & 1/left & Evaluates to \texttt{true} if both expr are equal\\
+    \hline
+    \texttt{<expr} > \texttt{<expr>} & \texttt{Greater} of \texttt{Expr * Expr} & 1/left & Evaluates to \texttt{true} if the left expr is greater than the right expr\\
+    \hline
+    \texttt{<expr} < \texttt{<expr>} & \texttt{Lesser} of \texttt{Expr * Expr} & 1/left & Evaluates to \texttt{true} if the left expr is lesser than the right expr\\
+    \hline
+    \texttt{<name>} & \texttt{Var} of \texttt{String} & n/a & References a previously declared variable\\
+    \hline
+    \texttt{shuffle <name>} & \texttt{Shuffle} of \texttt{String} & n/a & Randomizes the order of cards in a specified deck\\
+    \hline
+    \texttt{<var> = <value>} & \texttt{Assign} of \texttt{Expr * Expr} & n/a & Assigns a value to a variable\\
+    \hline
+    \texttt{firstcard <player>} & \texttt{Firstcard} of \texttt{String} & n/a & Returns the first card in a players hand\\
+    \hline
+    \texttt{showcard <index> <player>} & \texttt{Showcard} of \texttt{int * String} & n/a & Displays a specified card depending on the index\\
+    \hline
+    \texttt{takecard <player> <player>} & \texttt{Takecard} of \texttt{String * String} & n/a & Takes a card from a player and gives it to another player\\
+    \hline
+    \texttt{hascards <player>} & \texttt{Hascards} of \texttt{String} & n/a & Returns \texttt{true} if the player has any cards in their deck\\
+    \hline
+    \texttt{winner <player>} & \texttt{Winner} of \texttt{String} & n/a & Declares the player as the winner\\
+    \hline
+    \texttt{while <cond> <body>} & \texttt{While} of \texttt{Expr * Expr} & n/a & Repeats the body until the condition evaluates as true\\
+    \hline
+    \texttt{if <cond> <body>} & \texttt{if} of  \texttt{Expr * Expr} & n/a & Repeats the body only if the condition evaluates as true\\
+    \hline
+    \texttt{prompt <string>} & \texttt{prompt} of \texttt{String} & n/a & Reads console input and returns \texttt{true} for 1 or \texttt{false} for 0
+
+
+\end{tabular}
+\end{center}
+
+\subsection*{7 \hspace{1cm} Remaining Work}
+
+Further development for CardBoulevard would include some of the following aspects:
+\begin{itemize}
+    \item \textbf{Detailed customization of cards: } Currently, our implementation only allows for custom suits, or types, of cards, but in further implementations, we would like to be able to add attributes and descriptions to each card.
+    The result would ideally look, or be able to achieve, something close to Pokemon cards, with health, damage, attributes, etc.
+    \item \textbf{Graphical Interface: } The output of our current program is a text-based terminal interface, which doesn't include any graphics to make it easier for users to see their finished product. 
+    We would like to implement, in future versions of our program, a sort of graphical interface, to be able to see a graphical end product of whatever game a user has created.
+\end{itemize}
+
+Our original plan for CardBoulevard had custom cards and our first point up above, but because of time constraints and the complexity of the problem, we were unable to successfully implement it, and therefore we left it out of the final branch.
+The future of CardBoulevard is exciting, with many new additions and implementations to come!
+
+% DO NOT DELETE ANYTHING BELOW THIS LINE
+\end{document}
