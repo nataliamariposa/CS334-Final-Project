@@ -1,0 +1,2 @@
+player 1 {"dealer", [(diamond, 1),(diamond, 2)]}
+sum "dealer"

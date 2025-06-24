@@ -1,0 +1,19 @@
+player 1 {"dealer", [(diamond, 1),(diamond, 2)]}
+player 2 {"player1", []}
+player 3 {"player2", []}
+
+shuffle "dealer"
+answer := prompt "Player 1, do you want the top or bottom card? Top [1], bottom [0]"
+nother := false
+
+if (answer) (takecard "dealer" "player1")
+if (answer) (takecard "dealer" "player2")
+opposite := answer = nother
+if (opposite) (takecard "dealer" "player2")
+if (opposite) (takecard "dealer" "player1")
+
+score1 := sum "player1"
+score2 := sum "player2"
+
+if (score1 > score2) (winner "player1")
+if (score1 < score2) (winner "player2")
