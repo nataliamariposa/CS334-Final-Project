@@ -1,0 +1,34 @@
+player 1 {"dealer", [(diamond, 1),(diamond, 2),(diamond, 4),(diamond, 5),(diamond, 6),(diamond, 7),(diamond, 8),(diamond, 9),(diamond, 10),(diamond, 11),(heart, 1),(heart, 2),(heart, 4),(heart, 5),(heart, 6),(heart, 7),(heart, 8),(heart, 9),(heart, 10),(heart, 11)]}
+player 2 {"player1", []}
+player 6 {"computer", []}
+player 3 {"bucket", []}
+player 4 {"win condition", [(diamond, 1),(diamond, 1),(diamond, 1),(diamond, 1),(diamond, 1)]}
+player 5 {"limit", [(diamond, 21)]}
+
+prompt "Aim to get a sum of cards under 21! :D Understand? Yes[1] Also Yes[0]"
+shuffle "dealer"
+takecard "dealer" "player1"
+takecard "dealer" "player1"
+sum "player1"
+answer1 := prompt "Take card? Yes [1] No[0]"
+if (answer1) (takecard "dealer" "player1")
+sum "player1"
+answer2 := prompt "Take card? Yes [1] No[0]"
+if (answer2) (takecard "dealer" "player1")
+sum "player1"
+answer3 := prompt "Take card? Yes [1] No[0]"
+if (answer3) (takecard "dealer" "player1")
+
+takecard "dealer" "computer"
+takecard "dealer" "computer"
+
+while sum "computer" < 17 (takecard "dealer" "computer")
+
+if (sum "computer" < sum "player1") (takecard "win condition" "bucket")
+if (sum "player1" < 21) (takecard "win condition" "bucket")
+if (sum "bucket" = 2) (winner "player1")  
+if (sum "computer" <21) (winner "computer")
+
+sum "player1" < 21
+
+
